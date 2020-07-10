@@ -54,7 +54,7 @@ git clone https://github.com/StarAllianceFoundation/SAFChain
 Enter the xuperchain folder and build the code:
 
 ```
-cd xuperchain
+cd SAFChain
 make
 ```
 
