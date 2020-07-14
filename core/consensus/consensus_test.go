@@ -507,6 +507,7 @@ func TestUpdateConsensusOther(t *testing.T) {
 		Args: map[string]interface{}{
 			"name": "tdpos",
 			"config": map[string]interface{}{
+				"vote_award":         "300",
 				"proposer_num":       "3",
 				"period":             "3000",
 				"alternate_interval": "6000",

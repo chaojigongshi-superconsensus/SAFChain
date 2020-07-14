@@ -86,6 +86,7 @@ func commonWork(t *testing.T) (U *utxo.UtxoVM, L *ledger.Ledger, T *TDpos) {
 			voteUnitPrice:     big.NewInt(12),
 		},
 	}
+	VoterBallots = &sync.Map{}
 
 	return U, L, T
 }

@@ -24,7 +24,7 @@ type user struct {
 
 func MakeSmr(t *testing.T) (*Smr, error) {
 	user := &user{
-		address:    `dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN`,
+		address:    `SAFdpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN`,
 		publicKey:  `{"Curvname":"P-256","X":74695617477160058757747208220371236837474210247114418775262229497812962582435,"Y":51348715319124770392993866417088542497927816017012182211244120852620959209571}`,
 		privateKey: `{"Curvname":"P-256","X":74695617477160058757747208220371236837474210247114418775262229497812962582435,"Y":51348715319124770392993866417088542497927816017012182211244120852620959209571,"D":29079635126530934056640915735344231956621504557963207107451663058887647996601}`,
 	}
@@ -33,6 +33,8 @@ func MakeSmr(t *testing.T) (*Smr, error) {
 		t.Error("MakeSmr CreateCryptoClient error ", err)
 		return nil, err
 	}
+
+	//修改父区块的签名地址 chainedbft/external/mock_external_cons.go
 	externalCons := &external.MockExternalConsensus{}
 	mockP2p := &p2p_base.MockP2pServer{}
 	privateKey, _ := cryptoClient.GetEcdsaPrivateKeyFromJSON([]byte(user.privateKey))
@@ -60,7 +62,7 @@ func MakeSmr(t *testing.T) (*Smr, error) {
 
 	validates := []*cons_base.CandidateInfo{
 		&cons_base.CandidateInfo{
-			Address:  "dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN",
+			Address:  "SAFdpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN",
 			PeerAddr: "",
 		},
 	}
@@ -102,7 +104,7 @@ func MakeProposalMsg(t *testing.T) (*p2p_pb.XuperMessage, error) {
 		ViewNumber: 1005,
 		ProposalQC: qc,
 		Signature: &pb.SignInfo{
-			Address:   `dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN`,
+			Address:   `SAFdpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN`,
 			PublicKey: `{"Curvname":"P-256","X":74695617477160058757747208220371236837474210247114418775262229497812962582435,"Y":51348715319124770392993866417088542497927816017012182211244120852620959209571}`,
 		},
 	}
@@ -133,7 +135,7 @@ func MakeNewViewMsg(t *testing.T) (*p2p_pb.XuperMessage, error) {
 		Type:       pb.QCState_NEW_VIEW,
 		ViewNumber: 1007,
 		Signature: &pb.SignInfo{
-			Address:   `dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN`,
+			Address:   `SAFdpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN`,
 			PublicKey: `{"Curvname":"P-256","X":74695617477160058757747208220371236837474210247114418775262229497812962582435,"Y":51348715319124770392993866417088542497927816017012182211244120852620959209571}`,
 		},
 	}
@@ -161,7 +163,7 @@ func MakeVoteMsg(t *testing.T) (*p2p_pb.XuperMessage, error) {
 	voteMsg := &pb.ChainedBftVoteMessage{
 		ProposalId: []byte("proposalQC ProposalId"),
 		Signature: &pb.SignInfo{
-			Address:   `dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN`,
+			Address:   `SAFdpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN`,
 			PublicKey: `{"Curvname":"P-256","X":74695617477160058757747208220371236837474210247114418775262229497812962582435,"Y":51348715319124770392993866417088542497927816017012182211244120852620959209571}`,
 		},
 	}
@@ -306,7 +308,7 @@ func TestAddVoteMsg(t *testing.T) {
 		t.Error("TestAddVoteMsg addVoteMsg error", "error", err)
 		return
 	}
-	msg.Signature.Address = "dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN"
+	msg.Signature.Address = "SAFdpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN"
 	err = smr.addVoteMsg(msg)
 	if err != nil {
 		t.Error("TestAddVoteMsg addVoteMsg error", "error", err)
