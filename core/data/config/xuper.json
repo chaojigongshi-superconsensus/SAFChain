@@ -2,8 +2,8 @@
     "version" : "1"
     , "predistribution":[
         {
-            "address" : "SAFn9w5b2nMxsj2e8tsTT9n9G89g4e3xm635"
-            , "quota" : "1000000000000"
+            "address" : ""
+            , "quota" : ""
         }
     ]
     , "maxblocksize" : "128"
@@ -19,14 +19,14 @@
         "disk_rate": 1,
         "xfee_rate": 1
     },
-    "new_account_resource_amount": 100000000,
+    "new_account_resource_amount": 500000,
     "transfer_fee_amount": 500000,
     "genesis_consensus":{
        "name": "pow",
        "config": {
 			"defaultTarget": "22",
 			"adjustHeightGap": "10",
-			"expectedPeriod": "15",
+			"expectedPeriod": "600",
 			"maxTarget": "0"
        }
     },

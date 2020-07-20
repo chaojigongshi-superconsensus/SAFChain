@@ -3,8 +3,8 @@ package utxo
 import (
 	"errors"
 	"fmt"
-
 	"github.com/golang/protobuf/proto"
+	"math/big"
 
 	"github.com/xuperchain/xuperchain/core/common"
 	"github.com/xuperchain/xuperchain/core/kv/kvdb"
@@ -18,6 +18,11 @@ var (
 	// TxSizePercent max percent of txs' size in one block
 	TxSizePercent = 0.8
 )
+
+//获取全网总额
+func (uv *UtxoVM) GetUtxoTotal() *big.Int {
+	return uv.GetTotal()
+}
 
 //获取当前的转账手续费
 func (uv *UtxoVM) GetTransferFeeAmount() int64 {

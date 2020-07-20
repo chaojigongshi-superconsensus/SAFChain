@@ -3,6 +3,7 @@ package contract
 import (
 	"encoding/json"
 	"fmt"
+	"math/big"
 
 	"github.com/xuperchain/xuperchain/core/kv/kvdb"
 	"github.com/xuperchain/xuperchain/core/ledger"
@@ -28,6 +29,7 @@ type UtxoMetaRegister interface {
 	UpdateNewAccountResourceAmount(int64, kvdb.Batch) error
 	GetTransferFeeAmount() int64                     //获取转账手续费
 	UpdateTransferFeeAmount(int64, kvdb.Batch) error //更新转账手续费
+	GetUtxoTotal() *big.Int                          //获取全网总额
 	QueryTx(txid []byte) (*pb.Transaction, error)
 	GetXModel() *xmodel.XModel
 	// Get irreversible slide window

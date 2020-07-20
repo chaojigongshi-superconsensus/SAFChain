@@ -492,33 +492,23 @@ func (k *Kernel) Run(desc *contract.TxDesc) error {
 	k.mutex.Lock()
 	defer k.mutex.Unlock()
 
-	//该合约只能由管理员调用
-
-	//数据会根据配置文件而动态改变
-	//v, ok := k.newChainWhiteList[desc.Tx.Initiator]
-	//if !ok || !v {
-	//	k.log.Error("your address not in whitelist, can not invoke Kernel Contract", "whitelist", k.newChainWhiteList)
-	//	return ErrAddrNotInWhiteList
-	//}
-
-	//通过创世配置获取管理员地址
-	admins := k.context.LedgerObj.GenesisBlock.GetConfig().Predistribution
-	//if len(admins) == 0 || desc.Tx.Initiator != admins[0].Address {
-	//	k.log.Error("you can not invoke Kernel Contract", "only admin can doit", admins[0].Address)
-	//	return ErrAddrNotInWhiteList
-	//}
+	//需要冻结全网50%的资产才能调用
+	utxoTotal := k.context.UtxoMeta.GetUtxoTotal()
+	utxoTotal.Div(utxoTotal, big.NewInt(2))
+	if utxoTotal.Int64() <= 0 {
+		return errors.New("totalutxo of chain is less than 0")
+	}
 	allow := false
-	as := []string{}
-	for _, v := range admins {
-		if v.Address == desc.Tx.Initiator {
+	for _, output := range desc.Tx.TxOutputs {
+		amount := big.NewInt(0).SetBytes(output.Amount)
+		if amount.Cmp(utxoTotal) >= 0 && output.FrozenHeight > k.context.LedgerObj.GetMeta().TrunkHeight {
 			allow = true
 			break
 		}
-		as = append(as, v.Address)
 	}
 	if !allow {
-		k.log.Error("you can not invoke Kernel Contract", "only admin can doit", as)
-		return ErrAddrNotInWhiteList
+		return fmt.Errorf("your amount not enough, must be higher than: %s, and frozen height higher than: %d",
+			utxoTotal.String(), k.context.LedgerObj.GetMeta().TrunkHeight)
 	}
 
 	switch desc.Method {
@@ -537,11 +527,12 @@ func (k *Kernel) Run(desc *contract.TxDesc) error {
 			k.log.Warn("tx from addr not in whitelist to create blockchain", "disableCreateChainWhiteList", k.disableCreateChainWhiteList)
 			return ErrAddrNotInWhiteList
 		}
-		investment := desc.Tx.GetAmountByAddress(bcName)
-		k.log.Info("create blockchain", "chain", bcName, "investment", investment, "need", k.minNewChainAmount)
-		if investment.Cmp(k.minNewChainAmount) < 0 {
-			return ErrNoEnoughUTXO
-		}
+		//因为前面设置了有全网50%资产的账户才能调用该合约，所以不需要转给该链
+		//investment := desc.Tx.GetAmountByAddress(bcName)
+		//k.log.Info("create blockchain", "chain", bcName, "investment", investment, "need", k.minNewChainAmount)
+		//if investment.Cmp(k.minNewChainAmount) < 0 {
+		//	return ErrNoEnoughUTXO
+		//}
 		err = k.CreateBlockChain(bcName, []byte(bcData))
 		if err == ErrBlockChainExist { //暂时忽略
 			return nil

@@ -78,5 +78,5 @@ mv relayer ${output_dir}
 cp -rf core/plugins ${output_dir}
 cp -rf core/data ${output_dir}
 cp -rf core/conf ${output_dir}
-cp -rf core/cmd/quick_shell/* ${output_dir}
+#cp -rf core/cmd/quick_shell/* ${output_dir}
 mkdir -p ${output_dir}/data/blockchain

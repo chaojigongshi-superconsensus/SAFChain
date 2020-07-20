@@ -59,6 +59,8 @@ utxo:
   contractExecutionTime: 500
 
 kernel:
+  # 是否关闭创建平行链白名单功能
+  disableCreateChainWhiteList: true
   # minNewChainAmount 设置创建平行链时最少要转多少钱到同链名address
   minNewChainAmount: "1000000000000"
   newChainWhiteList:

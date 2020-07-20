@@ -279,6 +279,10 @@ func (c *Cli) transfer(ctx context.Context, client pb.XchainClient, opt *Transfe
 	if opt.From == "" {
 		opt.From = fromAddr
 	}
+	//接收地址不能为空
+	if opt.To == "" {
+		opt.To = fromAddr
+	}
 	return c.tansferSupportAccount(ctx, client, opt, fromAddr, fromPubkey, fromScrkey, cryptoClient)
 }
 

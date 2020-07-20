@@ -68,11 +68,6 @@ func GetAddressFromPublicKey(pub *ecdsa.PublicKey) (string, error) {
 // 如果成功，返回true和对应的密码学标记位；如果失败，返回false和默认的密码学标记位0
 func VerifyAddressUsingPublicKey(address string, pub *ecdsa.PublicKey) (bool, uint8) {
 
-	//适配原版的地址
-	if len(address) == 33 {
-		address = prefix + address
-	}
-
 	//base58反解回byte[]数组
 	slice := base58.Decode(address[len(prefix):])
 
@@ -99,10 +94,6 @@ func VerifyAddressUsingPublicKey(address string, pub *ecdsa.PublicKey) (bool, ui
 // CheckAddressFormat 验证钱包地址是否是合法的格式
 // 如果成功，返回true和对应的密码学标记位；如果失败，返回false和默认的密码学标记位0
 func CheckAddressFormat(address string) (bool, uint8) {
-
-	if len(address) == 33 {
-		address = prefix + address
-	}
 
 	//base58反解回byte[]数组
 	slice := base58.Decode(address[len(prefix):])

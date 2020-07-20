@@ -1417,12 +1417,19 @@ func (uv *UtxoVM) VerifyTxFee(tx *pb.Transaction) bool {
 	}
 
 	for _, output := range tx.TxOutputs {
-		if string(output.ToAddr) == FeePlaceholder {
+		switch string(output.ToAddr) {
+
+		//手续费
+		case FeePlaceholder:
 			//手续费价格匹配
 			fee := big.NewInt(0).SetBytes(output.Amount)
 			if fee.Int64() >= uv.GetTransferFeeAmount() {
 				return true
 			}
+
+		//空的收款人
+		case "":
+			return false
 		}
 	}
 
