@@ -44,4 +44,4 @@ core/crypto/client/gm/gmsm/sm2/pub.pem
 core/crypto/client/gm/gmsm/sm2/req.pem
 core/crypto/client/gm/gmsm/sm3/ifile
 core/crypto/client/gm/gmsm/sm4/key.pem
-
+!vendor/*
