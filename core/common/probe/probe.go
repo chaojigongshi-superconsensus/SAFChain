@@ -2,7 +2,6 @@ package probe
 
 import (
 	"github.com/xuperchain/log15"
-	"runtime"
 	"sync"
 	"time"
 )
@@ -72,9 +71,9 @@ func (sc *SpeedCalc) ShowInfo(log log.Logger) {
 		} else {
 			sc.maxSpeed[k] = s
 		}
-		log.Info("Speed", "bcname", sc.prefix, "flag", k, "cnt", v, "cost", dis, "qps[/s]", s, "max", sc.maxSpeed[k])
+		//log.Info("Speed", "bcname", sc.prefix, "flag", k, "cnt", v, "cost", dis, "qps[/s]", s, "max", sc.maxSpeed[k])
 	}
-	log.Info("Probe", "number of goroutines", runtime.NumGoroutine())
+	//log.Info("Probe", "number of goroutines", runtime.NumGoroutine())
 }
 
 // ShowLoop show the speed with a loop

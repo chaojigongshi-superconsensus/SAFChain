@@ -268,7 +268,7 @@ func (l *Ledger) formatBlock(txList []*pb.Transaction,
 	timestamp int64, curTerm int64, curBlockNum int64,
 	preHash []byte, targetBits int32, utxoTotal *big.Int, needSign bool,
 	qc *pb.QuorumCert, failedTxs map[string]string, blockHeight int64) (*pb.InternalBlock, error) {
-	l.xlog.Info("begin format block", "preHash", fmt.Sprintf("%x", preHash))
+	//l.xlog.Info("begin format block", "preHash", fmt.Sprintf("%x", preHash))
 	//编译的环境变量指定
 	block := &pb.InternalBlock{Version: BlockVersion}
 	block.Transactions = txList

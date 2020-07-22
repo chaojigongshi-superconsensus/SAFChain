@@ -198,7 +198,7 @@ func (sp *StreamPool) SendMessageWithResponse(ctx context.Context, msg *p2pPb.Xu
 	res := []*p2pPb.XuperMessage{}
 	lenCh := len(ch)
 	if lenCh <= 0 {
-		sp.log.Warn("StreamPool SendMessageWithResponse lenCh is nil")
+		//sp.log.Warn("StreamPool SendMessageWithResponse lenCh is nil")
 		return res, ErrRequest
 	}
 

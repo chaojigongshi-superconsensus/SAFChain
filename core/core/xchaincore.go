@@ -826,8 +826,8 @@ func (xc *XChainCore) Miner() int {
 			}
 			xc.doMiner()
 		}
-		meta := xc.Ledger.GetMeta()
-		xc.log.Info("Minner", "genesis", fmt.Sprintf("%x", meta.RootBlockid), "last", fmt.Sprintf("%x", meta.TipBlockid), "height", meta.TrunkHeight, "utxovm", fmt.Sprintf("%x", xc.Utxovm.GetLatestBlockid()))
+		//meta := xc.Ledger.GetMeta()
+		//xc.log.Info("Minner", "genesis", fmt.Sprintf("%x", meta.RootBlockid), "last", fmt.Sprintf("%x", meta.TipBlockid), "height", meta.TrunkHeight, "utxovm", fmt.Sprintf("%x", xc.Utxovm.GetLatestBlockid()))
 		if xc.stopFlag {
 			break
 		}

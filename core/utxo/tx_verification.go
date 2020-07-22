@@ -458,7 +458,6 @@ func (uv *UtxoVM) verifyContractTxAmount(tx *pb.Transaction) (bool, error) {
 		}
 	}
 	if amountOut.Cmp(amountCon) != 0 {
-		fmt.Println("amountOut not match amountCon")
 		return false, ErrContractTxAmout
 	}
 	return true, nil

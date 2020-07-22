@@ -9,9 +9,9 @@ log:
   filename: xchain
   fmt: logfmt
   # 是否打印命令行工具端口
-  console: false
+  console: true
   # 日志等级
-  level: debug
+  level: info
 
 # RPC 服务暴露的端口
 tcpServer:
