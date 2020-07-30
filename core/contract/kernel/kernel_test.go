@@ -21,10 +21,10 @@ import (
 	"github.com/xuperchain/xuperchain/core/utxo"
 )
 
-const BobAddress = "dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN"
+const BobAddress = "SAFdpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN"
 const BobPubkey = `{"Curvname":"P-256","X":74695617477160058757747208220371236837474210247114418775262229497812962582435,"Y":51348715319124770392993866417088542497927816017012182211244120852620959209571}`
 const BobPrivateKey = `{"Curvname":"P-256","X":74695617477160058757747208220371236837474210247114418775262229497812962582435,"Y":51348715319124770392993866417088542497927816017012182211244120852620959209571,"D":29079635126530934056640915735344231956621504557963207107451663058887647996601}`
-const AliceAddress = "WNWk3ekXeM5M2232dY2uCJmEqWhfQiDYT"
+const AliceAddress = "SAFWNWk3ekXeM5M2232dY2uCJmEqWhfQiDYT"
 const defaultKVEngine = "default"
 
 func bobToAlice(t *testing.T, utxovm *utxo.UtxoVM, ledger *ledger.Ledger, amount string, prehash []byte, desc string) ([]byte, error) {
@@ -39,7 +39,7 @@ func bobToAlice(t *testing.T, utxovm *utxo.UtxoVM, ledger *ledger.Ledger, amount
 	txreq.Desc = []byte(desc)
 	//bob给alice转20
 	txreq.Account = []*pb.TxDataAccount{
-		{Address: AliceAddress, Amount: amount},
+		{Address: AliceAddress, Amount: amount, FrozenHeight: 2},
 	}
 	timer := global.NewXTimer()
 	tx, err := utxovm.GenerateTx(txreq)
@@ -108,11 +108,11 @@ func TestCreateBlockChain(t *testing.T) {
         , "predistribution":[
                 {
                         "address" : "` + BobAddress + `",
-                        "quota" : "100"
+                        "quota" : "200"
                 },
 				{
                         "address" : "` + AliceAddress + `",
-                        "quota" : "200"
+                        "quota" : "100"
                 }
 
         ]
@@ -137,7 +137,7 @@ func TestCreateBlockChain(t *testing.T) {
 		t.Fatal(err)
 	}
 	//通过tx创建一个基础链:Dog链
-	nextBlockid, err := bobToAlice(t, utxovm, ledger, "1", block.Blockid, `{"module":"kernel", "method":"CreateBlockChain", "args": {"data": "{\n\t\"version\" : \"1\"\n\t, \"consensus\" : {\n\t\t\"miner\" : \"dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN\"\n\t}\n\t, \"predistribution\":[\n\t\t{\n\t\t\t\"address\" : \"dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN\"\n\t\t\t, \"quota\" : \"1000000000000000\"\n\t\t}\n\t]\n\t, \"maxblocksize\" : \"128\"\n\t, \"period\" : \"3000\"\n\t, \"award\" : \"1000000\"\n}\n", "name": "Dog"}}`)
+	nextBlockid, err := bobToAlice(t, utxovm, ledger, "150", block.Blockid, `{"module":"kernel", "method":"CreateBlockChain", "args": {"data": "{\n\t\"version\" : \"1\"\n\t, \"consensus\" : {\n\t\t\"miner\" : \"dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN\"\n\t}\n\t, \"predistribution\":[\n\t\t{\n\t\t\t\"address\" : \"dpzuVdosQrF2kmzumhVeFQZa1aYcdgFpN\"\n\t\t\t, \"quota\" : \"1000000000000000\"\n\t\t}\n\t]\n\t, \"maxblocksize\" : \"128\"\n\t, \"period\" : \"3000\"\n\t, \"award\" : \"1000000\"\n}\n", "name": "Dog"}}`)
 	if err != nil {
 		t.Fatal(err)
 	} else {

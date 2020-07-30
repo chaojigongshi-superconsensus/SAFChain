@@ -34,6 +34,20 @@ clean:
 	rm -f xchain
 	rm -f dump_chain
 	rm -f event_client
+	rm -rf core/xvm/compile/wabt/build
+	rm -rf core/contractsdk/cpp/build
+	rm -f core/crypto/client/gm/gmsm/sm2/cert.pem
+	rm -f core/crypto/client/gm/gmsm/sm2/ifile
+	rm -f core/crypto/client/gm/gmsm/sm2/ofile
+	rm -f core/crypto/client/gm/gmsm/sm2/priv.pem
+	rm -f core/crypto/client/gm/gmsm/sm2/pub.pem
+	rm -f core/crypto/client/gm/gmsm/sm2/req.pem
+	rm -f core/crypto/client/gm/gmsm/sm3/ifile
+	rm -f core/crypto/client/gm/gmsm/sm4/key.pem
+	rm -f coverage.txt
+	rm -rf core/core/logs
+	rm -rf core/logs
+	rm -rf core/plugins
 
 .PHONY: all test clean
 
@@ -47,6 +61,14 @@ PATH := ${PWD}/core/xvm/compile/wabt/build:$(PATH)
 
 http:
 	PLATFORM=$(PLATFORM) ./build-gateway.sh
+export GO111MODULE=on
+export GOFLAGS=-mod=vendor
+XCHAIN_ROOT := ${PWD}/core
+export XCHAIN_ROOT
+PATH := ${PWD}/core/xvm/compile/wabt/build:$(PATH)
+
+plugin:
+	PLATFORM=$(PLATFORM) ./build-plugin.sh
 export GO111MODULE=on
 export GOFLAGS=-mod=vendor
 XCHAIN_ROOT := ${PWD}/core
