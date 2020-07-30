@@ -3,7 +3,6 @@ package xchaincore
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net"
 
 	"github.com/golang/protobuf/proto"
@@ -61,7 +60,7 @@ func (xm *XChainMG) StartLoop() {
 		select {
 		case msg := <-xm.msgChan:
 			// handle received msg
-			xm.Log.Info("XchainMG get msg", "logid", msg.GetHeader().GetLogid(), "msgType", msg.GetHeader().GetType(), "checksum", msg.GetHeader().GetDataCheckSum())
+			//xm.Log.Info("XchainMG get msg", "logid", msg.GetHeader().GetLogid(), "msgType", msg.GetHeader().GetType(), "checksum", msg.GetHeader().GetDataCheckSum())
 			go xm.handleReceivedMsg(msg)
 		}
 	}
@@ -258,10 +257,10 @@ func (xm *XChainMG) ProcessBlock(block *pb.Block) error {
 		xm.Log.Error("ProcessBlock SendBlock error", "err", err)
 		return err
 	}
-	meta := bc.Ledger.GetMeta()
-	xm.Log.Info("SendBlock", "cost", hd.Timer.Print(), "genesis", fmt.Sprintf("%x", meta.RootBlockid),
-		"last", fmt.Sprintf("%x", meta.TipBlockid),
-		"height", meta.TrunkHeight, "utxo", global.F(bc.Utxovm.GetLatestBlockid()))
+	//meta := bc.Ledger.GetMeta()
+	//xm.Log.Info("SendBlock", "cost", hd.Timer.Print(), "genesis", fmt.Sprintf("%x", meta.RootBlockid),
+	//	"last", fmt.Sprintf("%x", meta.TipBlockid),
+	//	"height", meta.TrunkHeight, "utxo", global.F(bc.Utxovm.GetLatestBlockid()))
 	return nil
 }
 

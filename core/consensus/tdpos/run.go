@@ -374,7 +374,7 @@ func (tp *TDpos) runCheckValidater(desc *contract.TxDesc, block *pb.InternalBloc
 	}
 	if proposers != nil {
 		proposersJSON, _ := json.Marshal(proposers)
-		tp.log.Info("runCheckValidater", "key", key, "proposersJson", proposersJSON, "proposers", proposers)
+		//tp.log.Info("runCheckValidater", "key", key, "proposersJson", proposersJSON, "proposers", proposers)
 		tp.context.UtxoBatch.Put([]byte(key), proposersJSON)
 		tp.triggerProposerChanged(proposers)
 		return nil

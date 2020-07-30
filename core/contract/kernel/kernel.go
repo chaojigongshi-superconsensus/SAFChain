@@ -511,6 +511,24 @@ func (k *Kernel) Run(desc *contract.TxDesc) error {
 			utxoTotal.String(), k.context.LedgerObj.GetMeta().TrunkHeight)
 	}
 
+	//通过创世配置获取管理员地址
+	//admins := k.context.LedgerObj.GenesisBlock.GetConfig().Predistribution
+	//if len(admins) != 0 {
+	//	allow := false
+	//	as := []string{}
+	//	for _, v := range admins {
+	//		if v.Address == desc.Tx.Initiator {
+	//			allow = true
+	//			break
+	//		}
+	//		as = append(as, v.Address)
+	//	}
+	//	if !allow {
+	//		k.log.Error("you can not invoke Kernel Contract", "only admin can doit", as)
+	//		return errors.New("address not in genesis config list")
+	//	}
+	//}
+
 	switch desc.Method {
 	case "CreateBlockChain":
 		bcName, bcData, err := k.validateCreateBC(desc) //需要校验，否则容易panic

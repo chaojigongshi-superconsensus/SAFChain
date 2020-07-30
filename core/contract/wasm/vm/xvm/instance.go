@@ -15,7 +15,7 @@ import (
 )
 
 func createInstance(ctx *bridge.Context, code *contractCode, debugLogger *log.Logger) (vm.Instance, error) {
-	log.Info("instance resource limit", "limits", ctx.ResourceLimits)
+	//log.Info("instance resource limit", "limits", ctx.ResourceLimits)
 	execCtx, err := code.ExecCode.NewContext(&exec.ContextConfig{
 		GasLimit: ctx.ResourceLimits.Cpu,
 	})

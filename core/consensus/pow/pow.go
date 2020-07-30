@@ -246,6 +246,10 @@ func (pc *PowConsensus) calDifficulty(curBlock *pb.InternalBlock) int32 {
 		return pc.config.defaultTarget
 	}
 	prevTargetBits := pc.getTargetBitsFromBlock(preBlock)
+	//tdpos切换到pow时，父区块是没有难度值的
+	if prevTargetBits <= 0 {
+		return pc.config.defaultTarget
+	}
 	if height%int64(pc.config.adjustHeightGap) == 0 {
 		farBlock, err := pc.getPrevBlock(curBlock, pc.config.adjustHeightGap)
 		if err != nil {

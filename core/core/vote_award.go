@@ -29,10 +29,10 @@ func (xc *XChainCore) GenerateVoteAward() ([]*pb.Transaction, error) {
 	//打印票数
 	for voter, ballot := range ballots {
 		if voter == "all" {
-			xc.log.Info("[Vote_Award] all ballots count", "ballots", ballots["all"])
+			xc.log.Debug("[Vote_Award] all ballots count", "ballots", ballots["all"])
 			continue
 		}
-		xc.log.Info("[Vote_Award] voter ballots count", "voter", voter, "ballot", ballot)
+		xc.log.Debug("[Vote_Award] voter ballots count", "voter", voter, "ballot", ballot)
 	}
 
 	//生成奖励
@@ -53,7 +53,7 @@ func (xc *XChainCore) GenerateVoteAward() ([]*pb.Transaction, error) {
 		//投票奖励
 		voteAward := xc.Ledger.GenesisBlock.CalcVoteAward(tdpos.VoteAward, ratio)
 		ratioStr := fmt.Sprintf("%.16f", ratio)
-		xc.log.Info("[Vote_Award] calc vote award success", "voter", voter, "ratio", ratioStr, "award", voteAward)
+		xc.log.Debug("[Vote_Award] calc vote award success", "voter", voter, "ratio", ratioStr, "award", voteAward)
 
 		//奖励为0的不生成交易
 		if voteAward.Int64() == 0 {

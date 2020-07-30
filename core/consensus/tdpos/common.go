@@ -4,22 +4,22 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"math/big"
-	"sort"
-	"strconv"
-	"strings"
-
 	"github.com/xuperchain/xuperchain/core/common"
 	cons_base "github.com/xuperchain/xuperchain/core/consensus/base"
 	"github.com/xuperchain/xuperchain/core/contract"
 	"github.com/xuperchain/xuperchain/core/pb"
+	"math/big"
+	"sort"
+	"strconv"
+	"strings"
 )
 
 const minNominateProportion = 100000
 
 // miner 调度算法, 依据时间进行矿工节点调度
 func (tp *TDpos) minerScheduling(timestamp int64) (term int64, pos int64, blockPos int64) {
-	if timestamp < tp.initTimestamp {
+	//tdpos启动有几率延迟，要求不超过1秒
+	if timestamp < tp.initTimestamp && tp.initTimestamp/1000000-timestamp/1000000 > 1000 {
 		return
 	}
 	tp.log.Trace("getTermPos", "timestamp", timestamp, "inittimestamp", tp.initTimestamp)
@@ -156,7 +156,11 @@ func (tp *TDpos) getTermProposer(term int64) []*cons_base.CandidateInfo {
 			}
 			val = it.Value()
 		} else {
-			tp.log.Warn("TDpos getTermProposer query from table is nil", "tp.config.initProposer[1]", tp.config.initProposer[1])
+			proposers := make([]string, len(tp.config.initProposer[1]))
+			for i, v := range tp.config.initProposer[1] {
+				proposers[i] = v.Address
+			}
+			tp.log.Warn("TDpos getTermProposer query from table is nil", "tp.config.initProposer", proposers)
 			return tp.config.initProposer[1]
 		}
 	}
@@ -167,7 +171,6 @@ func (tp *TDpos) getTermProposer(term int64) []*cons_base.CandidateInfo {
 		return nil
 	}
 	return proposers
-
 }
 
 // 生成当前轮的验证者名单
@@ -182,7 +185,7 @@ func (tp *TDpos) genTermProposer() ([]*cons_base.CandidateInfo, error) {
 		tp.log.Trace("genTermProposer ", "key", key, "value", value)
 		addr := strings.TrimPrefix(key, GenCandidateBallotsPrefix())
 		if value == 0 {
-			tp.log.Warn("genTermProposer continue", "key", key, "value", value)
+			//tp.log.Warn("genTermProposer continue", "key", key, "value", value)
 			return true
 		}
 		tmp := &termBallots{
@@ -195,7 +198,11 @@ func (tp *TDpos) genTermProposer() ([]*cons_base.CandidateInfo, error) {
 	})
 
 	if int64(termBallotSli.Len()) < tp.config.proposerNum {
-		tp.log.Error("Term publish proposer num less than config", "termVotes", termBallotSli)
+		proposers := make([]string, len(termBallotSli))
+		for i, v := range termBallotSli {
+			proposers[i] = v.Address
+		}
+		tp.log.Error("Term publish proposer num less than config", "termVotes", proposers)
 		return nil, ErrProposerNotEnough
 	}
 

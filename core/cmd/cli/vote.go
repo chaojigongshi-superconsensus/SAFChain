@@ -22,6 +22,7 @@ type VoteCommand struct {
 
 	frozenHeight int64
 	amount       string
+	fee          string
 }
 
 // NewVoteCommand new vote
@@ -44,6 +45,7 @@ func NewVoteCommand(cli *Cli) *cobra.Command {
 func (c *VoteCommand) addFlags() {
 	c.cmd.Flags().Int64Var(&c.frozenHeight, "frozen", 0, "frozen height for your used tokens")
 	c.cmd.Flags().StringVar(&c.amount, "amount", "0", "amount of tokens")
+	c.cmd.Flags().StringVar(&c.fee, "fee", "0", "fee of one tx")
 }
 
 func (c *VoteCommand) vote(ctx context.Context, txid string) error {
@@ -68,6 +70,7 @@ func (c *VoteCommand) vote(ctx context.Context, txid string) error {
 		Desc:           desc,
 		FrozenHeight:   c.frozenHeight,
 		Version:        utxo.TxVersion,
+		Fee:            c.fee,
 	}
 	newtxid, err := c.cli.Transfer(ctx, &opt)
 	if err != nil {

@@ -20,7 +20,7 @@ func ValidPowBlock(block *pb.Block, xcore *XChainCore) bool {
 	newBlockHeight := internalBlock.GetHeight()
 	if xcore.con.Type(newBlockHeight) == consensus.ConsensusTypePow {
 		if newBlockHeight < xcore.Ledger.GetMeta().GetTrunkHeight() {
-			log.Warn("invalid block: new block's height is not enough", "new block's height->", newBlockHeight, "miner trunk height->", xcore.Ledger.GetMeta().GetTrunkHeight())
+			//log.Warn("invalid block: new block's height is not enough", "new block's height->", newBlockHeight, "miner trunk height->", xcore.Ledger.GetMeta().GetTrunkHeight())
 			return false
 		}
 		actualTargetBits := internalBlock.GetTargetBits()
